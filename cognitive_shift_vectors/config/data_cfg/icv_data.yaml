@@ -1,0 +1,5 @@
+defaults:
+  - task: vqa
+
+bs: 8
+num_workers: 4

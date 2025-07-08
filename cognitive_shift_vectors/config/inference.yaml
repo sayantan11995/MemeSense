@@ -1,0 +1,41 @@
+defaults:
+  - _self_
+  - data_cfg: icv_data
+  - lmm: idefics2-8B-base
+  - prompt: ${lmm}_${data_cfg/task}
+
+
+
+test_icv: True
+test_icl: False
+bs: 1
+test_num: -1
+train_num: -1
+few_shot_list: [1]
+
+run_name: debug
+result_dir: ${oc.env:RESULT_DIR}
+device: 'cuda'
+re_eval: False
+
+model_cpk_dir: ${oc.env:MODEL_CPK_DIR}
+model_name: "${icv_module.lmm.model_name}"
+use_rice: false
+ice_idx_list_cache: null
+
+generate_kwargs:
+  max_new_tokens: 50
+  num_beams: 3
+  length_penalty: 0.0
+  min_new_tokens: 0
+  output_hidden_states: False  # Get hidden states
+  return_dict_in_generate: False  # Ensure structured outpu
+
+
+
+hydra:
+  run:
+    dir: ${result_dir}/hydra_output/${hydra.job.name}/${run_name}/${now:%Y-%m-%d_%H-%M-%S}
+  sweep:
+    dir: ${result_dir}/hydra_output/${hydra.job.name}/${run_name}/${now:%Y-%m-%d_%H-%M-%S}
+    subdir: ${hydra.job.override_dirname}
